@@ -1,3 +1,4 @@
+/* global connection */
 //Init database
 var restify = require('restify');
 var mysql = require('mysql');
@@ -33,7 +34,7 @@ server.del({path : PATH +'/:userId' , version: '0.0.1'} , deleteUser);
 function findAllUsers(req, res, next){
     connection.query('SELECT * FROM user', function (error, results){
       if(error) {
-	  throw error;
+	      throw error;
       }
       //console.log(results);
       res.send(200, results);
@@ -45,7 +46,7 @@ function findAllUsers(req, res, next){
 function findUser(req, res, next){
     connection.query('SELECT * FROM user WHERE ID='+req.params.userId, function(error, results){
         if(error) {
-	    throw error;
+	        throw error;
         }
         //console.log(results);
         res.send(200, results);
@@ -65,14 +66,18 @@ function postNewUser(req , res , next){
     user.FName = req.params.FName;
     user.LName = req.params.LName;
     user.Email = req.params.Email;
-    connection.query('INSERT INTO user (first_name, last_name, email) VALUES (\''
+    
+    var query = 'INSERT INTO user (first_name, last_name, email) VALUES (\''
         +user.FName+'\', \''
         +user.LName+'\', \''
-        +user.Email+'\', \')'
-        , function (error, success){
+        +user.Email+'\')';
+        
+    console.log('query: ' + query);
+    
+    connection.query(query, function (error, success){
             if(error) {
-		throw error;
-	    }
+		         throw error;
+	        }
             console.log(success);
             res.send(200, success.insertId);
         }
