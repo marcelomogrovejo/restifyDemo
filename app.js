@@ -29,6 +29,7 @@ server.get({path : PATH , version : '0.0.1'} , findAllUsers);
 server.get({path : PATH +'/:userId' , version : '0.0.1'} , findUser);
 server.post({path : PATH , version: '0.0.1'} , postNewUser);
 server.del({path : PATH +'/:userId' , version: '0.0.1'} , deleteUser);
+//TODO: modify user, server.put
 
 //List all users
 function findAllUsers(req, res, next){
