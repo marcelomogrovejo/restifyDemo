@@ -26,8 +26,8 @@ server.listen(port ,ip_addr, function(){
 var PATH = '/users'
 server.get({path : PATH , version : '0.0.1'} , findAllUsers);
 server.get({path : PATH +'/:userId' , version : '0.0.1'} , findUser);
-//server.post({path : PATH , version: '0.0.1'} , postNewUser);
-//server.del({path : PATH +'/:userId' , version: '0.0.1'} , deleteUser);
+server.post({path : PATH , version: '0.0.1'} , postNewUser);
+server.del({path : PATH +'/:userId' , version: '0.0.1'} , deleteUser);
 
 //List all users
 function findAllUsers(req, res, next){
@@ -53,4 +53,38 @@ function findUser(req, res, next){
     });
 }
 
+//Add new user
+//Json: 
+//{
+//    "FName":"MyName",
+//    "LName":"MyLastName",
+//    "Email":"fnamelname@emailaddress.com"
+//}
+function postNewUser(req , res , next){
+    var user = {};
+    user.FName = req.params.FName;
+    user.LName = req.params.LName;
+    user.Email = req.params.Email;
+    connection.query('INSERT INTO user (first_name, last_name, email) VALUES (\''
+        +user.FName+'\', \''
+        +user.LName+'\', \''
+        +user.Email+'\', \')'
+        , function (error, success){
+            if(error) {
+		throw error;
+	    }
+            console.log(success);
+            res.send(200, success.insertId);
+        }
+    );
+}
 
+//Remove a user
+function deleteUser(req , res , next){
+    connection.query('DELETE FROM user WHERE ID = '+req.params.userId, function (error, success){
+        if(error) {
+	    throw error;
+	}
+        res.send(200, 'Remove successfully');
+    }); 
+}
