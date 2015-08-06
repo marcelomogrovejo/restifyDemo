@@ -12,14 +12,14 @@ connection = mysql.createConnection({
 var ip_addr = '127.0.0.1';
 var port    =  '3130';
 var server = restify.createServer({
-    name : "usuarios"
+    name : "restifyDemoServer"
 });
 
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 server.use(restify.CORS());
 server.listen(port ,ip_addr, function(){
-    console.log('%s activo en %s ', server.name , server.url);
+    console.log('%s active on %s ', server.name , server.url);
 });
 
 //Define requests
