@@ -12,7 +12,7 @@ var userResource = {
      * Retrieves all the users
      */
     getList : function(req, res, next) {
-        
+
 		console.log('Routing HTTP GET request...');
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET');

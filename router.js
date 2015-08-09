@@ -21,7 +21,7 @@ var routes = {
 	/**
 	 * Manages HTTP GET requests
 	 */
-	getOne : mainServer.get({path : PATH +':userId' , version : config.appVersion} , userController.findOne),
+	getOne : mainServer.get({path : PATH +'/:userId' , version : config.appVersion} , userController.findOne),
 
 	/**
 	 * Manages HTTP POST requests
