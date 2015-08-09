@@ -1,10 +1,7 @@
-/* PENDING: QUERIES TO MODELS */
-
-
 /**
  * User controller
  */
-use 'strict';
+'use strict';
 
 var conn = require('../config/db-connection.js');
 var connection = conn.get;
@@ -15,11 +12,19 @@ var userResource = {
      * Retrieves all the users
      */
     getList : function(req, res, next) {
-        connection.query('SELECT * FROM user', function (error, results) {
+        
+		console.log('Routing HTTP GET request...');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        //TODO: QUERIE TO MODEL        
+        var query = 'SELECT * FROM user';
+        connection.query(query, function (error, results) {
             if(error) {
                 throw error;
             }
-            console.log(results);
+            //console.log(results);
             res.send(200, results);
             return next();
         })
@@ -31,7 +36,15 @@ var userResource = {
      * param by url :userId
      */
     findOne : function(req, res, next) {
-        connection.query('SELECT * FROM user WHERE ID='+req.params.userId, function(error, results) {
+        
+        console.log('Routing HTTP GET request...');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        //TODO: QUERIE TO MODEL
+        var query = 'SELECT * FROM user WHERE id = '+req.params.userId;
+        connection.query(query, function(error, results) {
             if(error) {
                 throw error;
             }
@@ -57,15 +70,21 @@ var userResource = {
         user.lastName = req.params.lastName;
         user.email = req.params.email;
         
-        connection.query('INSERT INTO user(first_name, last_name, email) VALUES (\''
+        console.log('Routing HTTP POST request...');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        //TODO: QUERIE TO MODEL
+        var query = 'INSERT INTO user(first_name, last_name, email) VALUES (\''
             +user.firstName+'\', \''
             +user.lastName+'\', \''
-            +user.email+'\', \')'
-            , function (error, success) {
+            +user.email+'\')';
+        connection.query(query, function (error, success) {
                 if(error) {
                     throw error;
                 }
-                console.log(success);
+                //console.log(success);
                 res.send(200, success.insertId);
             }
         )
@@ -90,16 +109,23 @@ var userResource = {
         user.lastName = req.params.lastName;
         user.email = req.params.email;
         
-        connection.query('UPDATE user SET 
-            first_name = \''+user.firstName+'\',
-            , last_name = \''+user.lastName+'\',
-            , email = \''+user.email+'\' WHERE id =  '+user.id+''
-            , function (error, success) {
+		console.log('Routing HTTP PUT request...');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'PUT');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        //TODO: QUERIE TO MODEL
+        var query = 'UPDATE user ' 
+            +'SET first_name = \''+user.firstName+'\', '
+            +'last_name = \''+user.lastName+'\', '
+            +'email = \''+user.email+'\' '
+            +'WHERE id =  '+user.id+'';
+        connection.query(query, function (error, success) {
                 if(error) {
                     throw error;
                 }
-                console.log(success);
-                res.send(200, success.afectedRows);
+                //console.log(success);
+                res.send(200, success.affectedRows);
             }
         )
     },
@@ -110,7 +136,15 @@ var userResource = {
      * param by url userId
      */
     deleteOne : function(req , res , next) {
-        connection.query('DELETE FROM user WHERE ID = '+req.params.userId, function (error, success){
+        
+		console.log('Routing HTTP DELETE request...');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        //TODO: QUERIE TO MODEL
+        var query = 'DELETE FROM user WHERE ID = '+req.params.userId+'';
+        connection.query(query, function (error, success){
             if(error) {
                 throw error;
             }

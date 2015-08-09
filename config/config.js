@@ -4,6 +4,8 @@
 'use strict';
 
 var config = {
+	
+	appVersion : '0.0.1',
 
 	// MySQL Server	
 	dbServer : {
