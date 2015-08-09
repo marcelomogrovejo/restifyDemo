@@ -3,6 +3,7 @@
  */
 'use strict';
 
+var User = require('../model/userModel.js');
 var conn = require('../config/db-connection.js');
 var connection = conn.get;
 
@@ -18,16 +19,26 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Methods', 'GET');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-        //TODO: QUERIE TO MODEL        
-        var query = 'SELECT * FROM user';
-        connection.query(query, function (error, results) {
-            if(error) {
-                throw error;
+        // Without model - WORKS! 
+//        var query = 'SELECT * FROM user';
+//        connection.query(query, function (error, results) {
+//            if(error) {
+//                throw error;
+//            }
+//            //console.log(results);
+//            res.send(200, results);
+//            return next();
+//        })
+
+        // With model - WORKS!
+        var usr = new User();
+        usr.find('all', function(err, rows, fields) {
+            if(err) {
+                throw err;
             }
-            //console.log(results);
-            res.send(200, results);
-            return next();
-        })
+            res.send(200, rows);
+            return fields;
+        });
     },
 
     /**
@@ -42,16 +53,26 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Methods', 'GET');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-        //TODO: QUERIE TO MODEL
-        var query = 'SELECT * FROM user WHERE id = '+req.params.userId;
-        connection.query(query, function(error, results) {
-            if(error) {
-                throw error;
+        // Without model - WORKS!
+//        var query = 'SELECT * FROM user WHERE id = '+req.params.userId;
+//        connection.query(query, function(error, results) {
+//            if(error) {
+//                throw error;
+//            }
+//            //console.log(results);
+//            res.send(200, results);
+//            return next();
+//        })
+
+        // With model - WORKS!
+        var usr = new User();
+        usr.find('all', {where : 'id = '+req.params.userId}, function(err, rows, fields) {
+            if(err) {
+                throw err;
             }
-            //console.log(results);
-            res.send(200, results);
-            return next();
-        })
+            res.send(200, rows);
+            return fields;
+        });
     },
 
     /**
@@ -75,7 +96,7 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Methods', 'POST');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-        //TODO: QUERIE TO MODEL
+        // Without model - WORKS!
         var query = 'INSERT INTO user(first_name, last_name, email) VALUES (\''
             +user.firstName+'\', \''
             +user.lastName+'\', \''
@@ -88,6 +109,14 @@ var userResource = {
                 res.send(200, success.insertId);
             }
         )
+
+        // With model - NOT WORKS
+//        var usr = new User({
+//            first_name : user.firstName,
+//            last_name : user.lastName,
+//            email : user.email
+//        });
+//        usr.save();
     },
 
     /**
@@ -114,7 +143,7 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Methods', 'PUT');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-        //TODO: QUERIE TO MODEL
+        // Without model - WORKS!
         var query = 'UPDATE user ' 
             +'SET first_name = \''+user.firstName+'\', '
             +'last_name = \''+user.lastName+'\', '
@@ -128,6 +157,8 @@ var userResource = {
                 res.send(200, success.affectedRows);
             }
         )
+        
+        // With model - ??
     },
 
     /**
@@ -142,14 +173,19 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Methods', 'DELETE');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-        //TODO: QUERIE TO MODEL
+        // Without model - WORKS!
         var query = 'DELETE FROM user WHERE ID = '+req.params.userId+'';
         connection.query(query, function (error, success){
             if(error) {
                 throw error;
             }
             res.send(200, 'Remove successfully');
-        }) 
+        })
+
+        // With model - NOT WORKS
+//        var usr = new User();
+//        usr.set('id', req.params.userId);
+//        usr.remove();
     }
 
 }
