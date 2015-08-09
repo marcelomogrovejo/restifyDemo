@@ -1,3 +1,5 @@
+//TODO: figure out how to implement it on db-connection and here
+
 /**
  * User
  */
@@ -16,12 +18,5 @@ var MyAppModel = mysqlModel.createConnection({
 var User = MyAppModel.extend({
     tableName: 'user',
 });
-
-//var user = new User();
-//
-//user.find('all', {where: "year > 2001"}, function(err, rows, fields) {
-//    // Do something...
-//});
-
 
 module.exports = User;
