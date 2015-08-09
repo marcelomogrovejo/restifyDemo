@@ -97,26 +97,31 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
         // Without model - WORKS!
-        var query = 'INSERT INTO user(first_name, last_name, email) VALUES (\''
-            +user.firstName+'\', \''
-            +user.lastName+'\', \''
-            +user.email+'\')';
-        connection.query(query, function (error, success) {
-                if(error) {
-                    throw error;
-                }
-                //console.log(success);
-                res.send(200, success.insertId);
-            }
-        )
+//        var query = 'INSERT INTO user(first_name, last_name, email) VALUES (\''
+//            +user.firstName+'\', \''
+//            +user.lastName+'\', \''
+//            +user.email+'\')';
+//        connection.query(query, function (error, success) {
+//                if(error) {
+//                    throw error;
+//                }
+//                //console.log(success);
+//                res.send(200, success.insertId);
+//            }
+//        )
 
-        // With model - NOT WORKS
-//        var usr = new User({
-//            first_name : user.firstName,
-//            last_name : user.lastName,
-//            email : user.email
-//        });
-//        usr.save();
+        // With model - WORKS!
+        var usr = new User({
+            first_name : user.firstName,
+            last_name : user.lastName,
+            email : user.email
+        });
+        usr.save(function(error, success) {
+            if(error) {
+                throw error;
+            }
+            res.send(200, success.insertId);
+        });
     },
 
     /**
@@ -144,21 +149,34 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
         // Without model - WORKS!
-        var query = 'UPDATE user ' 
-            +'SET first_name = \''+user.firstName+'\', '
-            +'last_name = \''+user.lastName+'\', '
-            +'email = \''+user.email+'\' '
-            +'WHERE id =  '+user.id+'';
-        connection.query(query, function (error, success) {
-                if(error) {
-                    throw error;
-                }
-                //console.log(success);
-                res.send(200, success.affectedRows);
-            }
-        )
+//        var query = 'UPDATE user ' 
+//            +'SET first_name = \''+user.firstName+'\', '
+//            +'last_name = \''+user.lastName+'\', '
+//            +'email = \''+user.email+'\' '
+//            +'WHERE id =  '+user.id+'';
+//        connection.query(query, function (error, success) {
+//                if(error) {
+//                    throw error;
+//                }
+//                //console.log(success);
+//                res.send(200, success.affectedRows);
+//            }
+//        )
         
         // With model - ??
+        var usr = new User({
+            first_name : user.firstName,
+            last_name : user.lastName,
+            email : user.email
+        });
+        usr.set('id', user.id);
+        usr.save(function(error, success) {
+            if(error) {
+                throw error;
+            }
+            res.send(200, success.affectedRows);
+        });
+
     },
 
     /**
@@ -174,18 +192,23 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
         // Without model - WORKS!
-        var query = 'DELETE FROM user WHERE ID = '+req.params.userId+'';
-        connection.query(query, function (error, success){
+//        var query = 'DELETE FROM user WHERE ID = '+req.params.userId+'';
+//        connection.query(query, function (error, success){
+//            if(error) {
+//                throw error;
+//            }
+//            res.send(200, 'Remove successfully');
+//        })
+
+        // With model - WORKS!
+        var usr = new User();
+        usr.set('id', req.params.userId);
+        usr.remove(function(error, success) {
             if(error) {
                 throw error;
             }
             res.send(200, 'Remove successfully');
-        })
-
-        // With model - NOT WORKS
-//        var usr = new User();
-//        usr.set('id', req.params.userId);
-//        usr.remove();
+        });
     }
 
 }
