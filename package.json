@@ -10,6 +10,9 @@
   "license": "GPL",
   "dependencies": {
     "mysql": "~2.8.0",
-    "restify": "~3.0.3"
+    "restify": "~3.0.3",
+    "underscore": "~1.8.3",
+    "backbone": "~1.2.1",
+    "mysql-model": "~0.0.2"
   }
 }
