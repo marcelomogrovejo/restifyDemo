@@ -6,16 +6,10 @@
 'use strict';
 
 var config = require('../config/config');
-var mysqlModel = require('mysql-model');
+var conn = require('../config/db-connection');
+var connection = conn.getMySqlModal;
 
-var MyAppModel = mysqlModel.createConnection({
-  host : config.dbServer.hostname,
-  user : config.dbServer.username,
-  password : config.dbServer.password,
-  database : config.dbServer.database
-});
-
-var User = MyAppModel.extend({
+var User = connection.extend({
     tableName: 'user',
 });
 

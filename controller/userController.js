@@ -4,8 +4,8 @@
 'use strict';
 
 var User = require('../model/userModel');
-var conn = require('../config/db-connection');
-var connection = conn.get;
+//var conn = require('../config/db-connection');
+//var connection = conn.get;
 
 var userResource = {
 
@@ -105,7 +105,7 @@ var userResource = {
             last_name : req.params.lastName,
             email : req.params.email
         });
-        usr.set('id', req.params.id);
+        usr.set('id', req.params.userId);
         usr.save(function(error, success) {
             if(error) {
                 throw error;
