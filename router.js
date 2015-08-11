@@ -3,9 +3,9 @@
  */
 'use strict';
 
-var mainServer = require('config/server.js');
-var userController = require('controller/userController.js');
-var config = require('config/config.js');
+var mainServer = require('./config/server');
+var userController = require('./controller/userController');
+var config = require('./config/config');
 
 // Define the base url
 var PATH = '/users'

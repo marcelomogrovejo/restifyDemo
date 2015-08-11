@@ -4,7 +4,7 @@
 'use strict';
 
 var mysql = require('mysql');
-var config = require('./config.js');
+var config = require('./config');
 
 var connection = {
 	get : mysql.createConnection({

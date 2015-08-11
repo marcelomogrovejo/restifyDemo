@@ -4,7 +4,7 @@
 'use strict';
 
 var restify = require('restify');
-var config = require('./config.js');
+var config = require('./config');
 
 var startServer = {
 	get : restify.createServer({

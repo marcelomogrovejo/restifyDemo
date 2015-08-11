@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var config = require('../config/config.js');
+var config = require('../config/config');
 var mysqlModel = require('mysql-model');
 
 var MyAppModel = mysqlModel.createConnection({

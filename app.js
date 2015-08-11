@@ -1,3 +1,3 @@
-var mainServer = require('config/server.js');
-var mainRoutes = require('router.js');
+var mainServer = require('./config/server');
+var mainRoutes = require('./router');
 var routes = mainRoutes.routes;
