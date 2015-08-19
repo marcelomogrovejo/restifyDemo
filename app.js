@@ -1,3 +1,6 @@
 var mainServer = require('./config/server');
-var mainRoutes = require('./router');
-var routes = mainRoutes.routes;
+var userRouter = require('./router/userRouter');
+var roleRouter = require('./router/roleRouter');
+var userRoutes = userRouter.routes;
+var roleRoutes = roleRouter.routes;
+ 
