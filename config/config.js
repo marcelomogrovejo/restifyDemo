@@ -21,7 +21,7 @@ var config = {
 		ip : 'localhost',
 		port : '3130'
 	}
-	// Prod profile
+	// TODO: Prod profile
 
 
 };

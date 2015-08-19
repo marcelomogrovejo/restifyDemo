@@ -34,7 +34,7 @@ var routes = {
 	put : mainServer.put({path : PATH +'/:userId' , version: config.appVersion} , userController.updateOne),
 
 	/**
-	 * Manages HTTP DEL requests
+	 * Manages HTTP DELETE requests
 	 */
 	del : mainServer.del({path : PATH +'/:userId' , version: config.appVersion} , userController.deleteOne)
 }

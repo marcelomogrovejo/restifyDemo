@@ -15,7 +15,7 @@ var connection = {
 		database: config.dbServer.database
     }),
 	
-	getMySqlModal : mysqlModel.createConnection({
+	getMySqlModel : mysqlModel.createConnection({
 		host : config.dbServer.hostname,
 		user : config.dbServer.username,
 		password : config.dbServer.password,
