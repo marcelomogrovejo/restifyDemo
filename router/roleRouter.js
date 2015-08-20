@@ -26,7 +26,7 @@ var routes = {
 	/**
 	 * Manages HTTP GET requests
 	 */
-	getOneByName : mainServer.get({path : PATH +'/:roleName' , version : config.appVersion} , roleController.findOneByName),
+	getOneByName : mainServer.get({path : PATH +'/name/:roleName' , version : config.appVersion} , roleController.findOneByName),
 
 	/**
 	 * Manages HTTP POST requests
