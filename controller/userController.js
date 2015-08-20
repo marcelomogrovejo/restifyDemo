@@ -4,8 +4,6 @@
 'use strict';
 
 var User = require('../model/userModel');
-//var conn = require('../config/db-connection');
-//var connection = conn.get;
 
 var userResource = {
 

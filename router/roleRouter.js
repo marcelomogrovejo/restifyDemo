@@ -13,34 +13,59 @@ var PATH = '/roles'
 // Define routes
 var routes = {
 
-	/**
-	 * Manages HTTP GET requests
-	 */
+    /**
+     * Retrieves all the roles
+	 * 
+	 * Method: GET
+     */
 	getAll : mainServer.get({path : PATH , version : config.appVersion} , roleController.getList), 
 
-	/**
-	 * Manages HTTP GET requests
-	 */
+    /**
+     * Gets just one role by id
+     *
+	 * Method: GET
+     * param by url :roleId
+     */
 	getOne : mainServer.get({path : PATH +'/:roleId' , version : config.appVersion} , roleController.findOne),
 	
-	/**
-	 * Manages HTTP GET requests
-	 */
+    /**
+     * Gets just one role by name
+     *
+	 * Method: GET
+     * param by url :roleName
+     */
 	getOneByName : mainServer.get({path : PATH +'/name/:roleName' , version : config.appVersion} , roleController.findOneByName),
 
-	/**
-	 * Manages HTTP POST requests
-	 */
+    /**
+     * Adds a new role
+     *
+	 * Method: POST
+     * Json format:
+     * {
+     *    "roleName" : "MyRole"
+     * }
+     */
 	post : mainServer.post({path : PATH , version: config.appVersion} , roleController.addOne),
 
-	/**
-	 * Manages HTTP PUT requests
-	 */
+    /**
+     * Modifies an existing role
+     *
+     * Method: PUT
+     * param by url :roleId
+     *
+     * Json format:
+     * {
+     *    "roleName" : "MyRole"
+     * }
+     */
 	put : mainServer.put({path : PATH +'/:roleId' , version: config.appVersion} , roleController.updateOne),
 
-	/**
-	 * Manages HTTP DELETE requests
-	 */
+    /**
+     * Removes an existing role
+     *
+     * Method: DELETE
+     * param by url roleId
+     */
 	del : mainServer.del({path : PATH +'/:roleId' , version: config.appVersion} , roleController.deleteOne)
 }
 

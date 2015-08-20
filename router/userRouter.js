@@ -13,29 +13,55 @@ var PATH = '/users'
 // Define routes
 var routes = {
 
-	/**
-	 * Manages HTTP GET requests
-	 */
+    /**
+     * Retrieves all the users
+	 * 
+	 * Method: GET
+     */
 	getAll : mainServer.get({path : PATH , version : config.appVersion} , userController.getList), 
 
-	/**
-	 * Manages HTTP GET requests
-	 */
+    /**
+     * Gets just on user by id
+	 * 
+	 * Method: GET
+     * param by url :userId
+     */
 	getOne : mainServer.get({path : PATH +'/:userId' , version : config.appVersion} , userController.findOne),
 
-	/**
-	 * Manages HTTP POST requests
-	 */
+    /**
+     * Adds a new user
+     *
+	 * Method: POST
+     * Json format:
+     * {
+     *    "firstName" : "MyName",
+     *    "lastName":"MyLastName",
+     *    "email":"fnamelname@emailaddress.com"
+     * }
+     */
 	post : mainServer.post({path : PATH , version: config.appVersion} , userController.addOne),
 
-	/**
-	 * Manages HTTP PUT requests
-	 */
+    /**
+     * Modifies an existing user
+     *
+     * Method: PUT
+     * param by url :userId
+     *
+     * Json format:
+     * {
+     *    "firstName" : "MyName",
+     *    "lastName":"MyLastName",
+     *    "email":"fnamelname@emailaddress.com"
+     * }
+     */
 	put : mainServer.put({path : PATH +'/:userId' , version: config.appVersion} , userController.updateOne),
 
-	/**
-	 * Manages HTTP DELETE requests
-	 */
+    /**
+     * Removes an existing user
+     *
+     * Method: DELETE
+     * param by url userId
+     */
 	del : mainServer.del({path : PATH +'/:userId' , version: config.appVersion} , userController.deleteOne)
 }
 
