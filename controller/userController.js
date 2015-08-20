@@ -37,7 +37,15 @@ var userResource = {
         res.setHeader('Access-Control-Allow-Methods', 'GET');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-        var qry = 'SELECT * FROM user u INNER JOIN role r ON r.id = u.role_id';
+        var qry = 'SELECT '
+                    +'u.id AS user_id, '
+                    +'u.first_name, '
+                    +'u.last_name, '
+                    +'u.email, '
+                    +'u.role_id, '
+                    +'r.id AS role_id, '
+                    +'r.name FROM user u '
+                    +'INNER JOIN role r ON r.id = u.role_id';
         var usr = new User();
         usr.query(qry, function(err, rows, fields) {
             if(err) {
