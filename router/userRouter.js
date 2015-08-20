@@ -29,6 +29,12 @@ var routes = {
 	getOne : mainServer.get({path : PATH +'/:userId' , version : config.appVersion} , userController.findOne),
 
     /**
+     * Retrieves all the users and roles that they belong to
+     * 
+     * Method: GET
+     */
+    getAllUserAndRoles : mainServer.get({path : PATH +'/roles/all' , version : config.appVersion} , userController.findUsersAndRoles),
+    /**
      * Adds a new user
      *
 	 * Method: POST

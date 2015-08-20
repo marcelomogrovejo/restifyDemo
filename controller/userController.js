@@ -28,6 +28,27 @@ var userResource = {
     },
 
     /**
+     * Retrieves all the users and roles that they belong to
+     */
+    findUsersAndRoles : function(req, res, next) {
+		console.log('Routing HTTP GET request...');
+
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        var qry = 'SELECT * FROM user u INNER JOIN role r ON r.id = u.role_id';
+        var usr = new User();
+        usr.query(qry, function(err, rows, fields) {
+            if(err) {
+                throw err;
+            }
+            res.send(200, rows);
+            return fields;
+        });
+    },
+    
+    /**
      * Gets just on user by id
      *
      * param by url :userId
