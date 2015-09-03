@@ -4,8 +4,63 @@
 'use strict';
 
 var User = require('../model/userModel');
+var Auth = require('./authController');
 
-var userResource = {
+var UserResource = {
+
+    /**
+     * Find user by credentials
+     */
+    getUserByCredentials : function(req, res, next) {
+        console.log('Routing HTTP GET AUTHORIZATION request...');
+        
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        var usr = new User();
+        usr.find('first', {
+                where : 'username = \''+req.params.username+'\'',
+                and : 'password = \''+req.params.password+'\'' 
+        }, function(err, rows, fields) {
+            if(err) {
+                throw err;
+            }
+            if(rows) {
+                if (rows.auth_id) {
+                    Auth.getTokenById(rows.auth_id, function(token) {
+                        var currentDate = new Date();
+                        //FIXME temporal until the method addToken generates a valid expiration date
+                        var expirationDate = token.expirationDate;
+                        expirationDate.setDate(expirationDate.getDate() + 1);
+                        if(expirationDate.getTime() < currentDate.getTime()) {
+                            throw('Invalid token');
+                        }
+                        res.send(200, token.token);
+                    }, function(err) {
+                        throw(err);
+                    });
+                } else {
+                    Auth.genNewToken(rows.id, function(token) {
+                        //4. save the new one on db
+                        /* TODO: increment 1 day to currentDate to create expirationDate
+                            1. Using just JavaScript's Date object (no libraries):                        
+                                var tomorrow = new Date();
+                                tomorrow.setDate(tomorrow.getDate() + 1);
+                            2. Using MomentJS:
+                                var today = moment();
+                                var tomorrow = moment(today).add('days', 1);
+                            3. Using DateJS, but it hasn't been updated in a long time:
+                                var today = new Date(); // Or Date.today()
+                                var tomorrow = today.add(1).day();
+                        */
+                        Auth.addToken(token);
+                        res.set(200, token);
+                    });
+                }
+            }
+        });
+    },
 
     /**
      * Retrieves all the users
@@ -166,4 +221,4 @@ var userResource = {
 
 }
 
-module.exports = userResource;
+module.exports = UserResource;

@@ -1,5 +1,5 @@
 /**
- * Login model
+ * Authorization model
  */
 'use strict';
 
@@ -7,8 +7,8 @@ var config = require('../config/config');
 var conn = require('../config/db-connection');
 var connection = conn.getMySqlModel;
 
-var Login = connection.extend({
+var Authorization = connection.extend({
     tableName: 'auth',
 });
 
-module.exports = Login;
+module.exports = Authorization;

@@ -8,10 +8,18 @@ var userController = require('../controller/userController');
 var config = require('../config/config');
 
 // Define the base url
-var PATH = '/users'
+var PATH = '/users';
+var AUTH_PATH = '/auth';
 
 // Define routes
 var routes = {
+
+    /* TODO implementing oath2 authorization strategy */
+
+    /**
+     * Find an existent user by username and password 
+     */
+    getOneByCredentials : mainServer.post({path : AUTH_PATH+'/login' , version : config.appVersion} , userController.getUserByCredentials),
 
     /**
      * Retrieves all the users
