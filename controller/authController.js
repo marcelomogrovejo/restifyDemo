@@ -11,6 +11,7 @@ var AuthResource = {
      * Retrieves a token by id
      */
     getTokenById : function(id, success, error) {
+        console.log('Retrieving a token...');
         var auth = new Authorization();
         auth.find('first', {where : 'id = '+id, and: 'valid = 1'}, function(err, rows, fields) {            
             if(err) {
@@ -28,6 +29,8 @@ var AuthResource = {
      * Generates a new token
      */
     genNewToken : function(id, success) {
+        console.log('Generatig token...');
+        //TODO: research some JS tool for generating hashes
         var token = '123abc';
         success(token);
     },
