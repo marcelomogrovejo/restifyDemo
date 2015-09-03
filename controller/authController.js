@@ -12,6 +12,7 @@ var AuthResource = {
      */
     getTokenById : function(id, success, error) {
         console.log('Retrieving a token...');
+        
         var auth = new Authorization();
         auth.find('first', {where : 'id = '+id, and: 'valid = 1'}, function(err, rows, fields) {            
             if(err) {
@@ -28,17 +29,24 @@ var AuthResource = {
     /**
      * Generates a new token
      */
-    genNewToken : function(id, success) {
+    genNewToken : function() {
         console.log('Generatig token...');
-        //TODO: research some JS tool for generating hashes
-        var token = '123abc';
-        success(token);
+        
+        var expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 1);
+        var token = {
+            //TODO: research some JS tool for generating hashes
+            token : '123abc',
+            expirationDate : expirationDate,
+            valid : 1
+        }
+        return token;
     },
     
     /**
      * Save a new token on database
      */
-    addToken : function(token) {
+    addToken : function(token, success, error) {
         console.log('Adding token...');
 /*
         var token = new Token({
