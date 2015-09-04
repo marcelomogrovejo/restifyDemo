@@ -19,29 +19,45 @@ var UserResource = {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
         var usr = new User();
+        
+        console.log('usr');
+        console.log(usr);
+        
         usr.find('first', {
                 where : 'username = \''+req.params.username+'\'',
                 and : 'password = \''+req.params.password+'\'' 
         }, function(err, rows, fields) {
+
+            console.log('err');
+            console.log(err);
+            console.log('rows');
+            console.log(rows);
+
             if(err) {
                 throw err;
             }
             if(rows) {
-                if (rows.auth_id) {
-                    Auth.getTokenById(rows.auth_id, function(token) {
-                        var currentDate = new Date();
-                        //FIXME temporal until the method addToken generates a valid expiration date
-                        var expirationDate = token.expirationDate;
-                        expirationDate.setDate(expirationDate.getDate() + 1);
-                        if(expirationDate.getTime() < currentDate.getTime()) {
-                            throw('Invalid token');
-                        }
-                        res.send(200, token.token);
-                    }, function(err) {
-                        throw(err);
-                    });
-                } else {
+                console.log('1');
+                console.log(rows);
+                Auth.getTokenByUserId(rows.id, function(token) {
+                    console.log('2');
+                    console.log(token);
+                    //1. Exist toke for user, check expiration date
+                    var currentDate = new Date();
+                    //FIXME temporal until the method addToken generates a valid expiration date
+                    var expirationDate = token.expirationDate;
+                    expirationDate.setDate(expirationDate.getDate() + 1);
+                    if(expirationDate.getTime() < currentDate.getTime()) {
+                        throw('Invalid token');
+                    }
+                    res.send(200, token.token);
+                }, function(err) {
+                    console.log('3');
+                    console.log(err);
+                    //2. Non existent token, generates one
                     var token = Auth.genNewToken();
+                    console.log('4');
+                    console.log(token);
                     //4. save the new one on db
                     /* TODO: increment 1 day to currentDate to create expirationDate
                         1. Using just JavaScript's Date object (no libraries):                        
@@ -56,7 +72,7 @@ var UserResource = {
                     */
                     Auth.addToken(token);
                     res.send(200, token);
-                }
+                });
             }
         });
     },

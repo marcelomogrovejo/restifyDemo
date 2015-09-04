@@ -27,6 +27,29 @@ var AuthResource = {
     },
     
     /**
+     * Retrieves a token by user id
+     */
+    getTokenByUserId : function(userId, success, error) {
+        console.log('Retrieving a token for given user...');
+        
+        var auth = new Authorization();
+        auth.find('first', {where : 'user_id = '+userId, and: 'valid = 1'}, function(err, rows, fields) {            
+            console.log('1');
+            console.log(err);
+            if(err) {
+                error(err);
+            } else {
+                console.log('2');
+                console.log(rows);
+                success({
+                    token: rows.token,
+                    expirationDate: rows.expiration_date
+                });   
+            }                      
+        });
+    },
+    
+    /**
      * Generates a new token
      */
     genNewToken : function() {
