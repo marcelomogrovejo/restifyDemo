@@ -3,6 +3,7 @@
  */
 'use strict';
 
+var crypto = require('crypto');
 var Authorization = require('../model/authModel');
 
 var AuthResource = {
@@ -34,13 +35,9 @@ var AuthResource = {
         
         var auth = new Authorization();
         auth.find('first', {where : 'user_id = '+userId, and: 'valid = 1'}, function(err, rows, fields) {            
-            console.log('1');
-            console.log(err);
             if(err) {
                 error(err);
             } else {
-                console.log('2');
-                console.log(rows);
                 success({
                     token: rows.token,
                     expirationDate: rows.expiration_date
@@ -52,16 +49,21 @@ var AuthResource = {
     /**
      * Generates a new token
      */
-    genNewToken : function() {
+    genNewToken : function(userId) {
         console.log('Generatig token...');
-        
+
+        //Defines a day from today as expiration date 
         var expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + 1);
+        
+        //Generates a random hash
+        var hash = crypto.randomBytes(32).toString('hex');
+
         var token = {
-            //TODO: research some JS tool for generating hashes
-            token : '123abc',
+            token : hash,
             expirationDate : expirationDate,
-            valid : 1
+            valid : 1,
+            userId : userId
         }
         return token;
     },
@@ -70,18 +72,21 @@ var AuthResource = {
      * Save a new token on database
      */
     addToken : function(token, success, error) {
-        console.log('Adding token...');
-/*
-        var token = new Token({
-            name : req.params.roleName
+        console.log('Saving token...');
+
+        var auth = new Authorization({
+            token : token.token,
+            expiration_date : token.expirationDate,
+            valid : token.valid,
+            user_id : token.userId
         });
-        role.save(function(error, success) {
-            if(error) {
-                throw error;
+        auth.save(function(err, result) {
+            if(err) {
+                error(err);
+            } else {
+                success(result);
             }
-            res.send(200, success.insertId);
         });
-*/ 
     }
 	
 }

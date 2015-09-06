@@ -19,59 +19,32 @@ var UserResource = {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
         var usr = new User();
-        
-        console.log('usr');
-        console.log(usr);
-        
         usr.find('first', {
                 where : 'username = \''+req.params.username+'\'',
                 and : 'password = \''+req.params.password+'\'' 
         }, function(err, rows, fields) {
-
-            console.log('err');
-            console.log(err);
-            console.log('rows');
-            console.log(rows);
-
             if(err) {
                 throw err;
             }
             if(rows) {
-                console.log('1');
-                console.log(rows);
                 Auth.getTokenByUserId(rows.id, function(token) {
-                    console.log('2');
-                    console.log(token);
-                    //1. Exist toke for user, check expiration date
+                    //Exist toke for user, check expiration date
                     var currentDate = new Date();
                     //FIXME temporal until the method addToken generates a valid expiration date
                     var expirationDate = token.expirationDate;
                     expirationDate.setDate(expirationDate.getDate() + 1);
                     if(expirationDate.getTime() < currentDate.getTime()) {
-                        throw('Invalid token');
+                        throw('ERROR: Invalid token');
                     }
                     res.send(200, token.token);
                 }, function(err) {
-                    console.log('3');
-                    console.log(err);
-                    //2. Non existent token, generates one
-                    var token = Auth.genNewToken();
-                    console.log('4');
-                    console.log(token);
-                    //4. save the new one on db
-                    /* TODO: increment 1 day to currentDate to create expirationDate
-                        1. Using just JavaScript's Date object (no libraries):                        
-                            var tomorrow = new Date();
-                            tomorrow.setDate(tomorrow.getDate() + 1);
-                        2. Using MomentJS:
-                            var today = moment();
-                            var tomorrow = moment(today).add('days', 1);
-                        3. Using DateJS, but it hasn't been updated in a long time:
-                            var today = new Date(); // Or Date.today()
-                            var tomorrow = today.add(1).day();
-                    */
-                    Auth.addToken(token);
-                    res.send(200, token);
+                    //Non existent token, generates a new one
+                    var token = Auth.genNewToken(rows.id);
+                    Auth.addToken(token, function(success) {
+                        res.send(200, token);
+                    }, function(err) {
+                        throw('ERROR: Token not generated');
+                    });
                 });
             }
         });
