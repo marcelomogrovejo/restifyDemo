@@ -9,9 +9,9 @@ var Auth = require('./authController');
 var UserResource = {
 
     /**
-     * Find user by credentials
+     * Retrieves an existing and valid token or creates a new one, depending on user credentials.
      */
-    getUserByCredentials : function(req, res, next) {
+    getUserTokenByCredentials : function(req, res, next) {
         console.log('Routing HTTP GET AUTHORIZATION request...');
         
         res.setHeader('Access-Control-Allow-Origin', '*');

@@ -3,6 +3,7 @@
  */
 'use strict';
 
+var passport = require('passport-oauth2');
 var mainServer = require('../config/server');
 var userController = require('../controller/userController');
 var config = require('../config/config');
@@ -14,12 +15,21 @@ var AUTH_PATH = '/auth';
 // Define routes
 var routes = {
 
-    /* TODO implementing oath2 authorization strategy */
+    /**
+     * Find an existent token by username and password 
+     */
+    getUserToken : mainServer.post({path : AUTH_PATH+'/login' , version : config.appVersion} , userController.getUserTokenByCredentials),
 
     /**
-     * Find an existent user by username and password 
+     * TESTING OAUTH2
      */
-    getOneByCredentials : mainServer.post({path : AUTH_PATH+'/login' , version : config.appVersion} , userController.getUserByCredentials),
+    getUserHomePage : mainServer.get({
+            path: AUTH_PATH + '/login', 
+            version : config.appVersion, 
+    }, passport.authenticate('oauth2', {
+            failureRedirect: PATH,
+            successRedirect: PATH
+    })),
 
     /**
      * Retrieves all the users
