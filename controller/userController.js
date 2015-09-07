@@ -9,6 +9,25 @@ var Auth = require('./authController');
 var UserResource = {
 
     /**
+     * TESTING BASIC AUTH with restify internal libs
+     */
+    getUserAccessTest : function(req, res, next) {
+        var auth = req.headers['authorization'];
+        console.log(auth);
+        var credentials = new Buffer(auth.length);
+        for(var i = 0; i < auth.length; i++) {
+            credentials[i] = auth.charCodeAt(i);
+        }
+        console.log(credentials);
+        res.statusCode = 401;
+        res.setHeader('WWW-Authenticate', 'Basic realm="Secure Area"');
+        
+
+        
+        res.end('need creds');
+    },
+
+    /**
      * Retrieves an existing and valid token or creates a new one, depending on user credentials.
      */
     getUserTokenByCredentials : function(req, res, next) {

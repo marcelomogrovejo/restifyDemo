@@ -4,6 +4,7 @@
 'use strict';
 
 var passport = require('passport-oauth2');
+var oauth2orize = require('oauth2orize');
 var mainServer = require('../config/server');
 var userController = require('../controller/userController');
 var config = require('../config/config');
@@ -18,18 +19,12 @@ var routes = {
     /**
      * Find an existent token by username and password 
      */
-    getUserToken : mainServer.post({path : AUTH_PATH+'/login' , version : config.appVersion} , userController.getUserTokenByCredentials),
-
+//    getUserToken : mainServer.post({path : AUTH_PATH+'/login' , version : config.appVersion} , userController.getUserTokenByCredentials),
+    
     /**
-     * TESTING OAUTH2
+     * TEST BASIC AUTH with restify internal libs
      */
-    getUserHomePage : mainServer.get({
-            path: AUTH_PATH + '/login', 
-            version : config.appVersion, 
-    }, passport.authenticate('oauth2', {
-            failureRedirect: PATH,
-            successRedirect: PATH
-    })),
+    getAccessTest : mainServer.post({path : AUTH_PATH+'/login' , version : config.appVersion} , userController.getUserAccessTest),
 
     /**
      * Retrieves all the users
