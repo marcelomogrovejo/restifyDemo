@@ -13,16 +13,6 @@ var startServer = {
 };
 
 var server = startServer.get;
-server.use(restify.authorizationParser({
-	scheme: 'Basic',
-	credentials: '12345'
-/*	,
-	basic: {
-		username: $user,
-		password: $password
-	}
-*/
-}));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 server.use(restify.CORS());
