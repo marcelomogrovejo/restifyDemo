@@ -24,7 +24,9 @@ var routes = {
 	 * 
 	 * Method: GET
      */
-	getAll : mainServer.get({path : PATH , version : config.appVersion} , userController.getList), 
+//	getAll : mainServer.get({path : PATH , version : config.appVersion} , userController.getList), 
+
+    getAllAuth : mainServer.post({path : AUTH_PATH+'/users' , version : config.appVersion} , userController.getList),
 
     /**
      * Gets just on user by id
@@ -40,6 +42,7 @@ var routes = {
      * Method: GET
      */
     getAllUserAndRoles : mainServer.get({path : PATH +'/roles/all' , version : config.appVersion} , userController.findUsersAndRoles),
+    
     /**
      * Adds a new user
      *

@@ -41,7 +41,7 @@ var UserResource = {
                     //Non existent token, generates a new one
                     var token = Auth.genNewToken(rows.id);
                     Auth.addToken(token, function(success) {
-                        res.send(200, token);
+                        res.send(200, token.token);
                     }, function(err) {
                         throw('ERROR: Token not generated');
                     });
@@ -54,11 +54,14 @@ var UserResource = {
      * Retrieves all the users
      */
     getList : function(req, res, next) {
-		console.log('Routing HTTP GET request...');
+		console.log('Routing HTTP POST request...');
 
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        //TODO: check if req.token is a valid and not expired token
+        Auth.isValidToken(req.params.username, req.params.token);
 
         var usr = new User();
         usr.find('all', function(err, rows, fields) {
@@ -204,6 +207,22 @@ var UserResource = {
                 throw error;
             }
             res.send(200, 'Remove successfully');
+        });
+    },
+    
+    /**
+     * Retrieves an existent user by its id
+     */
+    getUserById : function(id, success, error) {
+        console.log('Retrieving user...');
+        
+        var usr = new User();
+        usr.find('first', {where : 'id = '+id}, function(err, rows, fields) {
+            if(err) {
+                throw err;
+            } else {
+                rows(rows);
+            }
         });
     }
 
