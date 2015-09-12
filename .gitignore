@@ -1,2 +1,6 @@
+node_modules/backbone/
+node_modules/mysql/
+node_modules/restify/
+node_modules/underscore/
 .settings
 *.log
